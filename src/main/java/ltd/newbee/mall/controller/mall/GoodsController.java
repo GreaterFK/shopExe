@@ -37,6 +37,12 @@ public class GoodsController {
     @Resource
     private NewBeeMallCategoryService newBeeMallCategoryService;
 
+    /**
+     * 商品查询
+     * @param params
+     * @param request
+     * @return
+     */
     @GetMapping({"/search", "/search.html"})
     public String searchPage(@RequestParam Map<String, Object> params, HttpServletRequest request) {
         if (ObjectUtils.isEmpty(params.get("page"))) {
@@ -71,6 +77,12 @@ public class GoodsController {
         return "mall/search";
     }
 
+    /**
+     * 查看商品详情
+     * @param goodsId
+     * @param request
+     * @return
+     */
     @GetMapping("/goods/detail/{goodsId}")
     public String detailPage(@PathVariable("goodsId") Long goodsId, HttpServletRequest request) {
         if (goodsId < 1) {

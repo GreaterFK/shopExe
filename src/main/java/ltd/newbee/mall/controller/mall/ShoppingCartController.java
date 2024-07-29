@@ -33,6 +33,12 @@ public class ShoppingCartController {
     @Resource
     private NewBeeMallShoppingCartService newBeeMallShoppingCartService;
 
+    /**
+     * 购物车页面
+     * @param request
+     * @param httpSession
+     * @return
+     */
     @GetMapping("/shop-cart")
     public String cartListPage(HttpServletRequest request,
                                HttpSession httpSession) {

@@ -78,7 +78,9 @@ public class NewBeeMallCarouselServiceImpl implements NewBeeMallCarouselService 
 
     @Override
     public List<NewBeeMallIndexCarouselVO> getCarouselsForIndex(int number) {
+        //定义vos集合用于返回数据
         List<NewBeeMallIndexCarouselVO> newBeeMallIndexCarouselVOS = new ArrayList<>(number);
+        //查询轮播图
         List<Carousel> carousels = carouselMapper.findCarouselsByNum(number);
         if (!CollectionUtils.isEmpty(carousels)) {
             newBeeMallIndexCarouselVOS = BeanUtil.copyList(carousels, NewBeeMallIndexCarouselVO.class);

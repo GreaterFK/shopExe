@@ -3,7 +3,5 @@ newbee-mall 项目是一套电商系统，包括 newbee-mall 商城系统及 new
 
 当前分支的 Spring Boot 版本为 2.7.5
 
-## newbee-mall （新蜂商城）系列项目概览
 
-![newbee-mall-course-2022](https://github.com/newbee-ltd/newbee-mall-cloud/raw/main/static-files/newbee-mall-course-2022.png)
 

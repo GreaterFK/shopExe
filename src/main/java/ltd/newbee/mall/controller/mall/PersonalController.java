@@ -64,6 +64,14 @@ public class PersonalController {
         return "mall/addresses";
     }
 
+    /**
+     * 登录
+     * @param loginName
+     * @param verifyCode
+     * @param password
+     * @param httpSession
+     * @return
+     */
     @PostMapping("/login")
     @ResponseBody
     public Result login(@RequestParam("loginName") String loginName,
@@ -96,6 +104,14 @@ public class PersonalController {
         return ResultGenerator.genFailResult(loginResult);
     }
 
+    /**
+     * 用户注册
+     * @param loginName
+     * @param verifyCode
+     * @param password
+     * @param httpSession
+     * @return
+     */
     @PostMapping("/register")
     @ResponseBody
     public Result register(@RequestParam("loginName") String loginName,
@@ -126,6 +142,8 @@ public class PersonalController {
         return ResultGenerator.genFailResult(registerResult);
     }
 
+    //
+//    修改
     @PostMapping("/personal/updateInfo")
     @ResponseBody
     public Result updateInfo(@RequestBody MallUser mallUser, HttpSession httpSession) {

@@ -38,12 +38,17 @@ public class PersonalController {
         return "mall/personal";
     }
 
+    //删除session中的用户信息
     @GetMapping("/logout")
     public String logout(HttpSession httpSession) {
         httpSession.removeAttribute(Constants.MALL_USER_SESSION_KEY);
         return "mall/login";
     }
 
+    /**
+     * 用户登录
+     * @return
+     */
     @GetMapping({"/login", "login.html"})
     public String loginPage() {
         return "mall/login";
@@ -75,10 +80,11 @@ public class PersonalController {
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_VERIFY_CODE_NULL.getResult());
         }
         ShearCaptcha shearCaptcha = (ShearCaptcha) httpSession.getAttribute(Constants.MALL_VERIFY_CODE_KEY);
-
+        //后端校验输入是否为空，验证码是否错误
         if (shearCaptcha == null || !shearCaptcha.verify(verifyCode)) {
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
         }
+//        查询用户对象
         String loginResult = newBeeMallUserService.login(loginName, MD5Util.MD5Encode(password, "UTF-8"), httpSession);
         //登录成功
         if (ServiceResultEnum.SUCCESS.getResult().equals(loginResult)) {
@@ -123,6 +129,7 @@ public class PersonalController {
     @PostMapping("/personal/updateInfo")
     @ResponseBody
     public Result updateInfo(@RequestBody MallUser mallUser, HttpSession httpSession) {
+        //修改个人信息
         NewBeeMallUserVO mallUserTemp = newBeeMallUserService.updateUserInfo(mallUser, httpSession);
         if (mallUserTemp == null) {
             Result result = ResultGenerator.genFailResult("修改失败");

@@ -41,6 +41,7 @@ public class OrderController {
     @Resource
     private NewBeeMallOrderService newBeeMallOrderService;
 
+    //订单详情
     @GetMapping("/orders/{orderNo}")
     public String orderDetailPage(HttpServletRequest request, @PathVariable("orderNo") String orderNo, HttpSession httpSession) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
@@ -49,7 +50,15 @@ public class OrderController {
         return "mall/order-detail";
     }
 
+    /**
+     * ok
+     * @param params
+     * @param request
+     * @param httpSession
+     * @return
+     */
     @GetMapping("/orders")
+            //分页显示订单
     public String orderListPage(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpSession httpSession) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
         params.put("userId", user.getUserId());
@@ -64,6 +73,11 @@ public class OrderController {
         return "mall/my-orders";
     }
 
+    /**
+     * 保存订单
+     * @param httpSession
+     * @return
+     */
     @GetMapping("/saveOrder")
     public String saveOrder(HttpSession httpSession) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
@@ -82,6 +96,12 @@ public class OrderController {
         return "redirect:/orders/" + saveOrderResult;
     }
 
+    /**
+     * 取消订单，把订单状态设置为已取消
+     * @param orderNo
+     * @param httpSession
+     * @return
+     */
     @PutMapping("/orders/{orderNo}/cancel")
     @ResponseBody
     public Result cancelOrder(@PathVariable("orderNo") String orderNo, HttpSession httpSession) {
@@ -94,6 +114,12 @@ public class OrderController {
         }
     }
 
+    /**
+     * 完成订单，把订单状态设置为已完成
+     * @param orderNo
+     * @param httpSession
+     * @return
+     */
     @PutMapping("/orders/{orderNo}/finish")
     @ResponseBody
     public Result finishOrder(@PathVariable("orderNo") String orderNo, HttpSession httpSession) {
@@ -106,9 +132,11 @@ public class OrderController {
         }
     }
 
+    //选择付款方式
     @GetMapping("/selectPayType")
     public String selectPayType(HttpServletRequest request, @RequestParam("orderNo") String orderNo, HttpSession httpSession) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+        //根据订单id获取订单详情
         NewBeeMallOrder newBeeMallOrder = newBeeMallOrderService.getNewBeeMallOrderByOrderNo(orderNo);
         //判断订单userId
         if (!user.getUserId().equals(newBeeMallOrder.getUserId())) {
@@ -123,6 +151,16 @@ public class OrderController {
         return "mall/pay-select";
     }
 
+    /**
+     * 去支付
+     * @param request
+     * @param orderNo
+     * @param httpSession
+     * @param payType
+     * @return
+     */
+
+    //选择付款方式
     @GetMapping("/payPage")
     public String payOrder(HttpServletRequest request, @RequestParam("orderNo") String orderNo, HttpSession httpSession, @RequestParam("payType") int payType) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
@@ -144,6 +182,12 @@ public class OrderController {
         }
     }
 
+    /**
+     * 支付成功
+     * @param orderNo
+     * @param payType
+     * @return
+     */
     @GetMapping("/paySuccess")
     @ResponseBody
     public Result paySuccess(@RequestParam("orderNo") String orderNo, @RequestParam("payType") int payType) {

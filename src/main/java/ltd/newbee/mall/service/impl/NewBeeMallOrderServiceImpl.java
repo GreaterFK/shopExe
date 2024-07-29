@@ -293,7 +293,9 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 
     @Override
     public PageResult getMyOrders(PageQueryUtil pageUtil) {
+        //查询用户订单数量
         int total = newBeeMallOrderMapper.getTotalNewBeeMallOrders(pageUtil);
+//        获取订单详情，默认分类查询
         List<NewBeeMallOrder> newBeeMallOrders = newBeeMallOrderMapper.findNewBeeMallOrderList(pageUtil);
         List<NewBeeMallOrderListVO> orderListVOS = new ArrayList<>();
         if (total > 0) {
@@ -303,8 +305,11 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
             for (NewBeeMallOrderListVO newBeeMallOrderListVO : orderListVOS) {
                 newBeeMallOrderListVO.setOrderStatusString(NewBeeMallOrderStatusEnum.getNewBeeMallOrderStatusEnumByStatus(newBeeMallOrderListVO.getOrderStatus()).getName());
             }
+
             List<Long> orderIds = newBeeMallOrders.stream().map(NewBeeMallOrder::getOrderId).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(orderIds)) {
+
+                //根据订单id获取订单详情
                 List<NewBeeMallOrderItem> orderItems = newBeeMallOrderItemMapper.selectByOrderIds(orderIds);
                 Map<Long, List<NewBeeMallOrderItem>> itemByOrderIdMap = orderItems.stream().collect(groupingBy(NewBeeMallOrderItem::getOrderId));
                 for (NewBeeMallOrderListVO newBeeMallOrderListVO : orderListVOS) {
